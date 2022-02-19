@@ -1,3 +1,5 @@
+import os
+import random
 import playsound
 import datetime
 import speech_recognition as sr
@@ -30,6 +32,13 @@ def temperature():
     engine.runAndWait()
 
 
+def add_all_jokes_to_list():
+    list_of_jokes = []
+    number_of_jokes = len([name for name in os.listdir('/someMap') if os.path.isfile(name)])
+    #   print len([name for name in os.listdir('.') if os.path.isfile(name)])
+    #   list_of_jokes.append(jokes + i)
+
+
 continueSpeech = True
 listener = sr.Recognizer()
 engine = pyttsx3.init()
@@ -57,6 +66,8 @@ while continueSpeech:
             elif 'who are you' in command:
                 print('Sound')  # playsound('path')
             #   Look up words on Wikipedia & say 'em
+            elif 'say joke' or 'tell joke' in command:
+                random.randrange(10)
     except:
         print('error')
         pass
