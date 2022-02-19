@@ -19,7 +19,7 @@ def temperature():
     temp_kelvin = float(json_object['main']['temp'])
     temp_celcius = temp_kelvin - 273.15
     engine.setProperty('rate', 130)
-    engine.say('It is ' + str(temp_celcius) + 'celsius outside')    # Risk för regn?
+    engine.say('It is ' + str(temp_celcius) + 'celsius outside')  # Risk för regn?
     engine.runAndWait()
 
 
@@ -30,9 +30,15 @@ voices = engine.getProperty('voices')
 voiceRate = 145
 now = datetime.datetime.now().strftime('%H %M')
 print(now)
+morning_saying = True
 
 while continueSpeech:
     try:
+        if morning_saying:
+            if datetime.datetime.now().strftime('%H %M') == datetime.time(22, 34).strftime('%H %M'):
+                engine.say('Good morning =)')
+                engine.runAndWait()
+                morning_saying = False
         engine.setProperty('rate', voiceRate)
         with sr.Microphone() as source:
             print('listening...')
