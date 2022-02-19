@@ -12,6 +12,13 @@ def say_time():
     engine.runAndWait()
 
 
+def say_good_morning():
+    engine.say('Good morning =)')
+    engine.runAndWait()
+    true_or_false = False
+    return true_or_false
+
+
 def temperature():
     get_request = requests.get(
         'http://api.openweathermap.org/data/2.5/weather?q=Sävja&appid=39e870fdecb055374d029c70bc4ed764')
@@ -26,19 +33,14 @@ def temperature():
 continueSpeech = True
 listener = sr.Recognizer()
 engine = pyttsx3.init()
-voices = engine.getProperty('voices')
 voiceRate = 145
-now = datetime.datetime.now().strftime('%H %M')
-print(now)
 morning_saying = True
 
 while continueSpeech:
     try:
         if morning_saying:
             if datetime.datetime.now().strftime('%H %M') == datetime.time(22, 34).strftime('%H %M'):
-                engine.say('Good morning =)')
-                engine.runAndWait()
-                morning_saying = False
+                morning_saying = say_good_morning()
         engine.setProperty('rate', voiceRate)
         with sr.Microphone() as source:
             print('listening...')
@@ -54,6 +56,7 @@ while continueSpeech:
                 temperature()
             elif 'who are you' in command:
                 print('Sound')  # playsound('path')
+            #   Look up words on Wikipedia & say 'em
     except:
         print('error')
         pass
