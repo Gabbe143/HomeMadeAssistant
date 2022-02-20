@@ -1,7 +1,11 @@
+import os
+import random
+import playsound
 import datetime
 import speech_recognition as sr
 import pyttsx3
 import requests
+
 
 def say_time():
     time = datetime.datetime.now().strftime('%I:%M %p')
@@ -10,23 +14,42 @@ def say_time():
     engine.runAndWait()
 
 
+def say_good_morning():
+    engine.say('Good morning =)')
+    engine.runAndWait()
+    true_or_false = False
+    return true_or_false
+
+
 def temperature():
-    get_request = requests.get('http://api.openweathermap.org/data/2.5/weather?q=Sävja&appid=39e870fdecb055374d029c70bc4ed764')
+    get_request = requests.get(
+        'http://api.openweathermap.org/data/2.5/weather?q=Sävja&appid=39e870fdecb055374d029c70bc4ed764')
     json_object = get_request.json()
-    temp_K = float(json_object['main']['temp'])
-    temp_C = temp_K - 273.15
-    return temp_C
+    temp_kelvin = float(json_object['main']['temp'])
+    temp_celcius = temp_kelvin - 273.15
+    engine.setProperty('rate', 130)
+    engine.say('It is ' + str(temp_celcius) + 'celsius outside')  # Risk för regn?
+    engine.runAndWait()
 
 
+def add_all_jokes_to_list():
+    list_of_jokes = []
+    number_of_jokes = len([name for name in os.listdir('/someMap') if os.path.isfile(name)])
+    #   print len([name for name in os.listdir('.') if os.path.isfile(name)])
+    #   list_of_jokes.append(jokes + i)
+
+
+continueSpeech = True
 listener = sr.Recognizer()
 engine = pyttsx3.init()
-voices = engine.getProperty('voices')
 voiceRate = 145
-now = datetime.datetime.now().strftime('%H %M')
-print(now)
+morning_saying = True
 
-while(now < ):
+while continueSpeech:
     try:
+        if morning_saying:
+            if datetime.datetime.now().strftime('%H %M') == datetime.time(22, 34).strftime('%H %M'):
+                morning_saying = say_good_morning()
         engine.setProperty('rate', voiceRate)
         with sr.Microphone() as source:
             print('listening...')
@@ -39,10 +62,12 @@ while(now < ):
             elif 'time' in command:
                 say_time()
             elif 'temp' in command:
-                temp = int(temperature())
-                engine.setProperty('rate', 130)
-                engine.say('It is ' + str(temp) + 'celsius outside')
-                engine.runAndWait()
+                temperature()
+            elif 'who are you' in command:
+                print('Sound')  # playsound('path')
+            #   Look up words on Wikipedia & say 'em
+            elif 'say joke' or 'tell joke' in command:
+                random.randrange(10)
     except:
         print('error')
         pass
