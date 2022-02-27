@@ -75,8 +75,8 @@ while continueSpeech:
         engine.setProperty('rate', voiceRate)
         with sr.Microphone() as source:
             print('listening...')
-            #voice = listener.listen(source)
-            command = 'temp' #listener.recognize_google(voice)
+            voice = listener.listen(source)
+            command = listener.recognize_google(voice)
             command = command.lower()
             if 'hey' in command:
                 engine.say('Yooooooooooooooooo how are you???')
