@@ -10,12 +10,18 @@ import requests
 import pyaudio
 
 
+def microphone_error():
+    engine.say('I cannot hear you, perhaps your microphone is inaccurately configured. Please contact your closes '
+               'Gabriel')
+    engine.runAndWait()
+
+
 def check_sound_volume():
     p = pyaudio.PyAudio()
     stream = p.open(source.SAMPLE_RATE, 1, source.format, True, False, source.CHUNK)
     data = stream.read(source.CHUNK)
     rms = audioop.rms(data, 2)
-    decibel = 20*math.log10(rms)
+    decibel = 20 * math.log10(rms)
     print(decibel)
     if 30 <= decibel <= 50:
         engine.say('why are you whispering?')
@@ -42,7 +48,7 @@ def temperature():
         'http://api.openweathermap.org/data/2.5/weather?q=Sävja&appid=39e870fdecb055374d029c70bc4ed764')
     json_object = get_request.json()
     temp_kelvin = float(json_object['main']['temp'])
-    temp_celcius = temp_kelvin - 273.15
+    temp_celcius = int(temp_kelvin - 273.15)
     engine.setProperty('rate', 130)
     engine.say('It is ' + str(temp_celcius) + 'celsius outside')  # Risk för regn/snö? Risk för åska?
     engine.runAndWait()
@@ -61,7 +67,6 @@ engine = pyttsx3.init()
 voiceRate = 145
 morning_saying = True
 
-
 while continueSpeech:
     try:
         if morning_saying:
@@ -70,8 +75,8 @@ while continueSpeech:
         engine.setProperty('rate', voiceRate)
         with sr.Microphone() as source:
             print('listening...')
-            voice = listener.listen(source)
-            command = listener.recognize_google(voice)
+            #voice = listener.listen(source)
+            command = 'temp' #listener.recognize_google(voice)
             command = command.lower()
             if 'hey' in command:
                 engine.say('Yooooooooooooooooo how are you???')
@@ -81,11 +86,14 @@ while continueSpeech:
             elif 'temp' in command:
                 temperature()
             elif 'who are you' in command:
-                print('Sound')  # playsound('path')
-            #   Look up words on Wikipedia & say 'em
+                print('I am Gabbi bla bla bla')
+                #   I am Gabbi bla bla bla
+                #   playsound.playsound('who_are_you.mp4')
             elif 'say joke' or 'tell joke' in command:
                 randomjoke = random.randrange(10)
-                #   playsound.playsound(jokeEng+randomjoke)
+                #   Look up words on Wikipedia/Google-jokes & say 'em
+                #   playsound.playsound(jokeEng+randomjoke.mp4)
     except:
+        microphone_error()
         print('error')
         pass
