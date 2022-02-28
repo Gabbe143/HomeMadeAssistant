@@ -1,3 +1,5 @@
+import audioop
+import math
 import os
 import random
 import playsound
@@ -5,6 +7,26 @@ import datetime
 import speech_recognition as sr
 import pyttsx3
 import requests
+import pyaudio
+
+
+def microphone_error():
+    engine.say('I cannot hear you, perhaps your microphone is inaccurately configured. Please contact your closes '
+               'Gabriel')
+    engine.runAndWait()
+
+
+def check_sound_volume():
+    p = pyaudio.PyAudio()
+    stream = p.open(source.SAMPLE_RATE, 1, source.format, True, False, source.CHUNK)
+    data = stream.read(source.CHUNK)
+    rms = audioop.rms(data, 2)
+    decibel = 20 * math.log10(rms)
+    print(decibel)
+    if 30 <= decibel <= 50:
+        engine.say('why are you whispering?')
+        engine.runAndWait()
+        #   This might not work, unsure (stream might be inaccurate or wrong, try).
 
 
 def say_time():
@@ -26,9 +48,9 @@ def temperature():
         'http://api.openweathermap.org/data/2.5/weather?q=Sävja&appid=39e870fdecb055374d029c70bc4ed764')
     json_object = get_request.json()
     temp_kelvin = float(json_object['main']['temp'])
-    temp_celcius = temp_kelvin - 273.15
+    temp_celcius = int(temp_kelvin - 273.15)
     engine.setProperty('rate', 130)
-    engine.say('It is ' + str(temp_celcius) + 'celsius outside')  # Risk för regn?
+    engine.say('It is ' + str(temp_celcius) + 'celsius outside')  # Risk för regn/snö? Risk för åska?
     engine.runAndWait()
 
 
@@ -64,10 +86,14 @@ while continueSpeech:
             elif 'temp' in command:
                 temperature()
             elif 'who are you' in command:
-                print('Sound')  # playsound('path')
-            #   Look up words on Wikipedia & say 'em
+                print('I am Gabbi bla bla bla')
+                #   I am Gabbi bla bla bla
+                #   playsound.playsound('who_are_you.mp4')
             elif 'say joke' or 'tell joke' in command:
-                random.randrange(10)
+                randomjoke = random.randrange(10)
+                #   Look up words on Wikipedia/Google-jokes & say 'em
+                #   playsound.playsound(jokeEng+randomjoke.mp4)
     except:
+        microphone_error()
         print('error')
         pass
