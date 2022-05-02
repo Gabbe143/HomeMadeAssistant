@@ -27,24 +27,24 @@ def microphone_error(engine):
     engine.runAndWait()
 
 
-#def check_sound_volume():
-    #p = pyaudio.PyAudio()
-    #stream = p.open(source.SAMPLE_RATE, 1, source.format, True, False, source.CHUNK,
-                    #True)  # Error code -1073741819 (0xC0000005)
-    #data = stream.read(source.CHUNK)
-    #rms = audioop.rms(data, 2)
-    #decibel = 20 * math.log10(rms)
-    #print(decibel)
-    #time.sleep(1)
+# def check_sound_volume():
+# p = pyaudio.PyAudio()
+# stream = p.open(source.SAMPLE_RATE, 1, source.format, True, False, source.CHUNK,
+# True)  # Error code -1073741819 (0xC0000005)
+# data = stream.read(source.CHUNK)
+# rms = audioop.rms(data, 2)
+# decibel = 20 * math.log10(rms)
+# print(decibel)
+# time.sleep(1)
 
-   # stream.stop_stream()
-   # stream.close()
+# stream.stop_stream()
+# stream.close()
 
-   # p.terminate()
-    # if 30 <= decibel <= 50:
-    #   engine.say('why are you whispering?')
-    #   engine.runAndWait()
-    #   This might not work, unsure (stream might be inaccurate or wrong, try).
+# p.terminate()
+# if 30 <= decibel <= 50:
+#   engine.say('why are you whispering?')
+#   engine.runAndWait()
+#   This might not work, unsure (stream might be inaccurate or wrong, try).
 
 
 def say_time(engine):
@@ -117,7 +117,6 @@ def main():
             microphone_error(engine)
             print('error')
             pass
-
 
 
 main()
