@@ -88,7 +88,7 @@ while continueSpeech:
             voice = listener.listen(source)
             command = listener.recognize_google(voice)
             command = command.lower()
-            check_sound_volume()
+            # check_sound_volume()
             if 'hey' in command:
                 engine.say('Yooooooooooooooooo how are you???')
                 engine.runAndWait()
