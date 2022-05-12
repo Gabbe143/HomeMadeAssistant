@@ -18,7 +18,9 @@ import datetime
 import speech_recognition as sr
 import pyttsx3
 import requests
-import pyaudio
+
+
+# import pyaudio
 
 
 def microphone_error(engine):
@@ -85,7 +87,7 @@ def main():
     engine = pyttsx3.init()
     voiceRate = 145
     morning_saying = True
-    format = pyaudio.paInt16
+    #   format = pyaudio.paInt16
     while continueSpeech:
         try:
             engine.setProperty('rate', voiceRate)
